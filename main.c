@@ -66,3 +66,46 @@ int main() {
     return 0;
 }
 
+void init_othello() {
+    int temp = 0;
+    int middle_value = (int)(N - 1) / 2;
+
+    for(int i = 0; i < N; i++) {
+        for(int j = 0; j < N; j++) {
+            BOARD[i][j] = BLANK;
+        }
+    }
+
+    BOARD[middle_value][middle_value] = BLACK;
+    BOARD[middle_value + 1][middle_value + 1] = BLACK;
+    BOARD[middle_value + 1][middle_value] = WHITE;
+    BOARD[middle_value][middle_value + 1] = WHITE;
+}
+
+void print_board() {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            switch (BOARD[i][j]) {
+                case BLANK: {
+                    printf("N ");
+                    break;
+                }
+                case BLACK: {
+                    printf("B ");
+                    break;
+                }
+                case WHITE: {
+                    printf("W ");
+                    break;
+                }
+            }
+        }
+        // 줄 바꿈
+        printf("\n");
+    }
+
+    // 다음 보드나 상용구 출력 구분을 위한 추가 줄 바꿈
+    printf("\n");
+}
+
+
