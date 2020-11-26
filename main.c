@@ -24,7 +24,6 @@ int num_of_moves = 4; // initial BWBW
 
 
 void init_othello() {
-    int temp = 0;
     int middle_value = (int)(N - 1) / 2;
 
     for(int i=0;i<N;i++) {
@@ -278,4 +277,30 @@ void count_score(int* black_score, int* white_score) {
         }
     }
 }
+
+void print_score(int player_1_score, int player_2_score) {
+    for (int row = 0; row < N; row++) {
+        for (int col = 0; col < N; col++) {
+            if (BOARD[row][col] == BLACK){
+                player_1_score++;
+            } else if (BOARD[row][col] == WHITE) {
+                player_2_score++;
+            }
+        }
+    }
+    printf("player 1 vs. player 2 \n %d : %d\n", player_1_score, player_2_score);
+
+
+}
+
+/*int is_game_end(int color){
+    printf("sacn if there are vaild moves\n");
+    int x = 0;
+    int y = 0;
+    int row_delta = 0;
+    int col_delta = 0;
+    int markable_count = 0;
+    int opponent_color = 0;
+    int blank_count = 0;*/
+
 
