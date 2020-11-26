@@ -293,7 +293,7 @@ void print_score(int player_1_score, int player_2_score) {
 
 }
 
-/*int is_game_end(int color){
+int is_game_end(int color){
     printf("sacn if there are vaild moves\n");
     int x = 0;
     int y = 0;
@@ -301,6 +301,69 @@ void print_score(int player_1_score, int player_2_score) {
     int col_delta = 0;
     int markable_count = 0;
     int opponent_color = 0;
-    int blank_count = 0;*/
+    int blank_count = 0;
+    
+       if (color == BLACK) {
+
+        opponent_color = WHITE;
+    } else {
+
+        opponent_color = BLACK;
+    }
+
+    for(int row = 0; row < N; row++){
+        for(int col=0; col < N; col++){
+            if(BOARD[row][col] != BLANK){
+                continue;
+            } else if (BOARD[row][col] == BLANK) {
+                blank_count++;
+            }
+     int opponent_x = 0;
+     int opponent_y = 0;
+
+            for (row_delta = -1; row_delta <= 1; row_delta++) {
+                for (col_delta = -1; col_delta <= 1; col_delta++) {
+
+
+                    if (row + row_delta < 0 || row + row_delta >= N ||
+                        col + col_delta < 0 || col + col_delta >= N ||
+                        row_delta == 0 && col_delta == 0) {
+                        continue;
+                    }
+                    //printf("row %d\n", row);
+                    //printf("col %d\n", col);
+                    //printf("row+row_delta %d\n",row+row_delta);
+                    //printf("col+col_delta %d\n", col+col_delta);
+                    if (BOARD[row+row_delta][col+col_delta] == opponent_color) {
+                        //printf("inside opponent color\n");
+
+                        opponent_x = row + row_delta;
+                        opponent_y = col + col_delta;
+
+                        for(;;){
+                            opponent_x += row_delta;
+                            opponent_y += col_delta;
+
+                            if(opponent_x < 0 || opponent_x >= N || opponent_y < 0 || opponent_y >= N){
+                                break;
+                            }
+
+                            if(BOARD[opponent_x][opponent_y] == BLANK) {
+                                break;
+                            }
+
+                            if (BOARD[opponent_x][opponent_y] == color) {
+                                //printf("the other end : %d, %d\n", opponent_x, opponent_y);
+                                markable_count++;
+                                //printf("markable position %d\n", markable_count);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
 
