@@ -15,56 +15,13 @@ int BOARD[N][N];
 
 void init_othello();
 void print_board();
-int is_game_end();
-int is_markable(int x, int y, int color);
-void input(int* x, int* y, int flag);
-int find_direction(int x_0, int y_0, int x_1, int y_1);
 void marking(int x, int y, int color);
-void count_score(int* black_score, int* white_score);
+void print_score();
+int is_game_end();
+int num_of_games = 0; //define which player moves first
+int num_of_moves = 4; // initial BWBW
 
-int main() {
-    // 초기 값을 음수로 하여 인덱스 범위를 벗어나게 함.
-    int x = -1, y = -1;
-    // 검은색이 선공
-    int color = BLACK;
 
-    int flag = 0;
-    int black_score = 0;
-    int white_score = 0;
-
-    int result = -1;
-
-    init_othello();
-    print_board();
-
-    while (!is_game_end()) {
-        // 여기에 들어왔다는 것은 게임이 끝나지 않았다는 것이므로 입력을 받음.
-        input(&x, &y, 1);
-
-        while (1) {
-            flag = is_markable(x, y, color);
-
-            if (flag == TRUE) {
-                marking(x, y, color);
-                color = !color;
-                break;
-            }
-
-            input(&x, &y, flag);
-        }
-    }
-
-    count_score(&black_score, &white_score);
-    printf("BLACK[%d]:WHITE[%d]\n", black_score, white_score);
-
-    if (black_score > white_score) {
-        printf("BLACK WIN!!\n");
-    } else if (black_score < white_score) {
-        printf("WHITE WIN!!\n");
-    }
-
-    return 0;
-}
 
 void init_othello() {
     int temp = 0;
@@ -108,15 +65,7 @@ void print_board() {
     printf("\n");
 }
 
-void input(int* x, int* y, int flag) {
-    if (flag == TRUE) {
-        printf("돌을 놓을 좌표를 입력 해주세요(x y): ");
-        scanf("%d %d", x, y);
-    } else {
-        printf("잘못된 좌표입니다. 좌표를 다시 입력 해주세요(x y): ");
-        scanf("%d %d", x, y);
-    }
-}
+
 
 /**
  * 마킹 할 수 없는 경우의 수
@@ -169,6 +118,97 @@ int is_markable(int x, int y, int color) {
 
                 opponent_x = row + row_delta;
                 opponent_y = col + col_delta;
+   for(;;){
+                    opponent_x += row_delta;
+                    opponent_y += col_delta;
+
+                    if(opponent_x < 0 || opponent_x >= N || opponent_y < 0 || opponent_y >= N){
+                        break;
+                    }
+
+                    if(BOARD[opponent_x][opponent_y] == BLANK) {
+                        break;
+                    }
+
+                    if (BOARD[opponent_x][opponent_y] == color) {
+                       //printf("the other end : %d, %d\n", opponent_x, opponent_y);
+                        markable_count++;
+                        //printf("markable position %d\n", markable_count);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    if (markable_count > 0){
+        printf("There are %d number of vaild moves\n", markable_count);
+        return TRUE;
+    } else if(markable_count == 0) {
+        printf("No vaild moves\n");
+        return FALSE;
+    }
+    return 0;
+
+}
+
+void marking(int x, int y, int color) {
+    int row = x-1;
+    int col = y-1;
+    int row_delta = 0;
+    int col_delta = 0;
+    int opponent_x = 0;
+    int opponent_y = 0;
+
+    int opponent_color = 0;
+    if (color == BLACK) {
+        opponent_color = WHITE;
+    } else {
+        opponent_color = BLACK;
+    }
+
+    for (row_delta = -1; row_delta <= 1; row_delta++) {
+        for (col_delta = -1; col_delta <= 1; col_delta++) {
+            //printf("inside marking\n");
+
+            if (row + row_delta < 0 || row + row_delta >= N ||
+                col + col_delta < 0 || col + col_delta >= N ||
+                row_delta == 0 && col_delta == 0) {
+                continue;
+            }
+            //printf("row %d\n", row);
+            //printf("col %d\n", col);
+            //printf("row+row_delta %d\n",row+row_delta);
+            //printf("col+col_delta %d\n", col+col_delta);
+            if (BOARD[row+row_delta][col+col_delta] == opponent_color) {
+                //printf("inside marking\n");
+
+                opponent_x = row + row_delta;
+                opponent_y = col + col_delta;
+
+                for(;;){
+                    opponent_x += row_delta;
+                    opponent_y += col_delta;
+
+                    if(opponent_x < 0 || opponent_x >= N || opponent_y < 0 || opponent_y >= N){
+                        break;
+                    }
+
+                    if(BOARD[opponent_x][opponent_y] == BLANK) {
+                        break;
+                    }
+
+                    if (BOARD[opponent_x][opponent_y] == color) {
+                        while(BOARD[opponent_x-=row_delta][opponent_y-=col_delta] == opponent_color)
+                            BOARD[opponent_x][opponent_y] = color;
+                        BOARD[x-1][y-1] = color;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+}
+              
 
 
 
