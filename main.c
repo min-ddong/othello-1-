@@ -70,8 +70,8 @@ void init_othello() {
     int temp = 0;
     int middle_value = (int)(N - 1) / 2;
 
-    for(int i = 0; i < N; i++) {
-        for(int j = 0; j < N; j++) {
+    for(int i=0;i<N;i++) {
+        for(int j=0;j<N;j++) {
             BOARD[i][j] = BLANK;
         }
     }
@@ -83,8 +83,8 @@ void init_othello() {
 }
 
 void print_board() {
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
+    for (int i=0; i<N;i++) {
+        for (int j=0; j<N;j++) {
             switch (BOARD[i][j]) {
                 case BLANK: {
                     printf("N ");
@@ -127,15 +127,51 @@ void input(int* x, int* y, int flag) {
 int is_markable(int x, int y, int color) {
     // 1번 경우의 수
     if (x < 0 || y < 0 || x >= N || y >= N) {
+    	printf("inside is markablecase 1\n");
         return ERROR;
     }
 
     // 2번 경우의 수
     if (BOARD[x][y] != BLANK) {
-        return ERROR;
+    	printf("inside is markable case 2\n");
+         return ERROR;
     }
 
     // 3번 경우의 수
+       int row = x-1;
+    int col = y-1;
+    int row_delta = 0;
+    int col_delta = 0;
+    int opponent_x = 0;
+    int opponent_y = 0;
+    int opponent_color = 0;
+    if (color == BLACK) {
+        opponent_color = WHITE;
+    } else {
+        opponent_color = BLACK;
+    }
+
+    for (row_delta = -1; row_delta <= 1; row_delta++) {
+        for (col_delta = -1; col_delta <= 1; col_delta++) {
+            printf("inside is markeable\n");
+            
+         if (row + row_delta < 0 || row + row_delta >= N ||
+                col + col_delta < 0 || col + col_delta >= N ||
+                row_delta == 0 && col_delta == 0) {
+                continue;
+            }
+              //printf("row %d\n", row);
+            //printf("col %d\n", col);
+            //printf("row+row_delta %d\n",row+row_delta);
+            //printf("col+col_delta %d\n", col+col_delta);
+            if (BOARD[row+row_delta][col+col_delta] == opponent_color) {
+                //printf("inside opponent color\n");
+
+                opponent_x = row + row_delta;
+                opponent_y = col + col_delta;
+
+
+
 
     return TRUE;
 }
