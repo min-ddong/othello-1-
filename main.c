@@ -108,4 +108,81 @@ void print_board() {
     printf("\n");
 }
 
+void input(int* x, int* y, int flag) {
+    if (flag == TRUE) {
+        printf("돌을 놓을 좌표를 입력 해주세요(x y): ");
+        scanf("%d %d", x, y);
+    } else {
+        printf("잘못된 좌표입니다. 좌표를 다시 입력 해주세요(x y): ");
+        scanf("%d %d", x, y);
+    }
+}
+
+/**
+ * 마킹 할 수 없는 경우의 수
+ * 1. 인덱스를 벗어난 경우(0보다 작거나 N 이상인 경우)
+ * 2. 이미 돌이 놓여진 곳 위에 돌을 놓으려고 시도하는 경우
+ * 3. 놓으려는 위치가 조건에 부합하지 않는 경우(내돌 상대돌 내돌)
+ */
+int is_markable(int x, int y, int color) {
+    // 1번 경우의 수
+    if (x < 0 || y < 0 || x >= N || y >= N) {
+        return ERROR;
+    }
+
+    // 2번 경우의 수
+    if (BOARD[x][y] != BLANK) {
+        return ERROR;
+    }
+
+    // 3번 경우의 수
+
+    return TRUE;
+}
+
+int find_direction(int x_0, int y_0, int x_1, int y_1) {
+    // 두 좌표를 받아 방향을 반환
+
+    if (x_0 == x_1) {
+        // 무조건 y축 상, 하 이동
+        if (y_0 > y_1) {
+            // y_0 가 y_1보다 크므로
+        }
+
+        if (y_0 < y_1) {
+            // y_1 가 y_0보다 크므로
+        }
+    }
+
+    if (y_0 == y_1) {
+        // 무조건 x축 좌, 우 이동
+        if (x_0 > x_1) {
+            // x_0 가 x_1보다 크므로
+        }
+
+        if (x_0 < x_1) {
+            // x_1 가 x_0보다 크므로
+        }
+    }
+
+    // 모든 경우의 수에 부합하지 않으므로 direction을 찾을 수 없는 -1 리턴
+    return -1;
+}
+
+void marking(int x, int y, int color) {
+    int x_1 = -1, y_1 = -1;
+    // dir(방향)에 따라 색을 칠함.
+    // 방향 경우의 수
+    // x축 좌, 우
+    // y축 상, 하
+    // 우대각 상 하
+    // 좌대각 상 하
+    // 총 여덟 가지
+    switch (find_direction(x, y, x_1, y_1)) {}
+}
+
+// 더 이상 돌을 놓을 수 없는 경우 게임을 종료하기 위한 플래그
+// 아 모르겠다…..
+int is_game_end() { return 0; }
+
 
