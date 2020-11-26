@@ -22,12 +22,12 @@ int num_of_games = 0; //define which player moves first
 int num_of_moves = 4; // initial BWBW
 
 
-
 void init_othello() {
+    int temp = 0;
     int middle_value = (int)(N - 1) / 2;
 
-    for(int i=0;i<N;i++) {
-        for(int j=0;j<N;j++) {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
             BOARD[i][j] = BLANK;
         }
     }
@@ -38,12 +38,13 @@ void init_othello() {
     BOARD[middle_value][middle_value + 1] = WHITE;
 }
 
+
 void print_board() {
-    for (int i=0; i<N;i++) {
-        for (int j=0; j<N;j++) {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
             switch (BOARD[i][j]) {
                 case BLANK: {
-                    printf("N ");
+                    printf("- ");
                     break;
                 }
                 case BLACK: {
@@ -64,8 +65,6 @@ void print_board() {
     printf("\n");
 }
 
-
-
 /**
  * 마킹 할 수 없는 경우의 수
  * 1. 인덱스를 벗어난 경우(0보다 작거나 N 이상인 경우)
@@ -73,22 +72,21 @@ void print_board() {
  * 3. 놓으려는 위치가 조건에 부합하지 않는 경우(내돌 상대돌 내돌)
  */
 int is_markable(int x, int y, int color) {
-	int markable_count = 0;
-
+    int markable_count = 0;
     // 1번 경우의 수
-    if (x < 0 || y < 0 || x >= N || y >= N) {
-    	printf("inside is markablecase 1\n");
-        return ERROR;
+    if (x < 0 || y < 0 || x > N || y > N) {
+        printf("inside is markable case 1\n");
+        return FALSE;
     }
 
     // 2번 경우의 수
-    if (BOARD[x][y] != BLANK) {
-    	printf("inside is markable case 2\n");
-         return ERROR;
+    if (BOARD[x-1][y-1] != BLANK) {
+        printf("inside is markable case 2\n");
+        return FALSE;
     }
 
     // 3번 경우의 수
-       int row = x-1;
+    int row = x-1;
     int col = y-1;
     int row_delta = 0;
     int col_delta = 0;
@@ -104,13 +102,13 @@ int is_markable(int x, int y, int color) {
     for (row_delta = -1; row_delta <= 1; row_delta++) {
         for (col_delta = -1; col_delta <= 1; col_delta++) {
             printf("inside is markeable\n");
-            
-         if (row + row_delta < 0 || row + row_delta >= N ||
+
+            if (row + row_delta < 0 || row + row_delta >= N ||
                 col + col_delta < 0 || col + col_delta >= N ||
                 row_delta == 0 && col_delta == 0) {
                 continue;
             }
-              //printf("row %d\n", row);
+            //printf("row %d\n", row);
             //printf("col %d\n", col);
             //printf("row+row_delta %d\n",row+row_delta);
             //printf("col+col_delta %d\n", col+col_delta);
@@ -119,7 +117,8 @@ int is_markable(int x, int y, int color) {
 
                 opponent_x = row + row_delta;
                 opponent_y = col + col_delta;
-   for(;;){
+
+                for(;;){
                     opponent_x += row_delta;
                     opponent_y += col_delta;
 
@@ -209,76 +208,7 @@ void marking(int x, int y, int color) {
         }
     }
 }
-              
 
-
-
-
-    return TRUE;
-}
-
-int find_direction(int x_0, int y_0, int x_1, int y_1) {
-    // 두 좌표를 받아 방향을 반환
-
-    if (x_0 == x_1) {
-        // 무조건 y축 상, 하 이동
-        if (y_0 > y_1) {
-            // y_0 가 y_1보다 크므로
-        }
-
-        if (y_0 < y_1) {
-            // y_1 가 y_0보다 크므로
-        }
-    }
-
-    if (y_0 == y_1) {
-        // 무조건 x축 좌, 우 이동
-        if (x_0 > x_1) {
-            // x_0 가 x_1보다 크므로
-        }
-
-        if (x_0 < x_1) {
-            // x_1 가 x_0보다 크므로
-        }
-    }
-
-    // 모든 경우의 수에 부합하지 않으므로 direction을 찾을 수 없는 -1 리턴
-    return -1;
-}
-
-void marking(int x, int y, int color) {
-    int x_1 = -1, y_1 = -1;
-    // dir(방향)에 따라 색을 칠함.
-    // 방향 경우의 수
-    // x축 좌, 우
-    // y축 상, 하
-    // 우대각 상 하
-    // 좌대각 상 하
-    // 총 여덟 가지
-    switch (find_direction(x, y, x_1, y_1)) {}
-}
-
-// 더 이상 돌을 놓을 수 없는 경우 게임을 종료하기 위한 플래그
-// 아 모르겠다…..
-int is_game_end() { return 0; }
-
-
-void count_score(int* black_score, int* white_score) {
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            switch (BOARD[i][j]) {
-                case BLACK: {
-                    *black_score = *black_score + 1;
-                    break;
-                }
-                case WHITE: {
-                    *white_score = *white_score + 1;
-                    break;
-                }
-            }
-        }
-    }
-}
 
 void print_score(int player_1_score, int player_2_score) {
     for (int row = 0; row < N; row++) {
@@ -295,6 +225,9 @@ void print_score(int player_1_score, int player_2_score) {
 
 }
 
+
+
+
 int is_game_end(int color){
     printf("sacn if there are vaild moves\n");
     int x = 0;
@@ -304,8 +237,8 @@ int is_game_end(int color){
     int markable_count = 0;
     int opponent_color = 0;
     int blank_count = 0;
-    
-       if (color == BLACK) {
+
+    if (color == BLACK) {
 
         opponent_color = WHITE;
     } else {
@@ -320,8 +253,11 @@ int is_game_end(int color){
             } else if (BOARD[row][col] == BLANK) {
                 blank_count++;
             }
-     int opponent_x = 0;
-     int opponent_y = 0;
+
+
+
+            int opponent_x = 0;
+            int opponent_y = 0;
 
             for (row_delta = -1; row_delta <= 1; row_delta++) {
                 for (col_delta = -1; col_delta <= 1; col_delta++) {
@@ -386,6 +322,9 @@ int is_game_end(int color){
     return 0;
 
 }
+
+
+
 int main(){
 
     int player = 0;
@@ -470,4 +409,4 @@ int main(){
     return 0;
 }
 
-
+//제 노트북에서 코딩이 안돌아서 다른 컴파일러로 돌려서 오류 찾고 복붙했어 
