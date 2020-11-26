@@ -185,4 +185,22 @@ void marking(int x, int y, int color) {
 // 아 모르겠다…..
 int is_game_end() { return 0; }
 
+int is_game_end() { return 0; }
+
+void count_score(int* black_score, int* white_score) {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            switch (BOARD[i][j]) {
+                case BLACK: {
+                    *black_score = *black_score + 1;
+                    break;
+                }
+                case WHITE: {
+                    *white_score = *white_score + 1;
+                    break;
+                }
+            }
+        }
+    }
+}
 
