@@ -73,6 +73,8 @@ void print_board() {
  * 3. 놓으려는 위치가 조건에 부합하지 않는 경우(내돌 상대돌 내돌)
  */
 int is_markable(int x, int y, int color) {
+	int markable_count = 0;
+
     // 1번 경우의 수
     if (x < 0 || y < 0 || x >= N || y >= N) {
     	printf("inside is markablecase 1\n");
@@ -384,6 +386,88 @@ int is_game_end(int color){
     return 0;
 
 }
+int main(){
 
+    int player = 0;
+    int x = 0;
+    int y = 0;
+    int NEXT = 1;
+    int player_1_score = 0;
+    int player_2_score = 0;
+    init_othello();
+    print_board();
+    print_score(player_1_score, player_2_score);
+    player = num_of_moves % 2;
+
+    while(is_game_end(player)) {
+        player = num_of_moves % 2;
+        NEXT = 1;
+
+
+        if (!player) {
+            while(NEXT){
+                fflush(stdin);
+                printf("BLACK Turn\n");
+                printf("Please enter the row coordinate\n");
+                scanf("%d", &x);
+                printf("Please enter the column coordinate\n");
+                scanf("%d", &y);
+                printf("current player is in second: %d\n",player);
+                printf("row = %d, column = %d \n", x, y);
+
+                if(is_markable(x, y, BLACK)){
+                    printf("it is markable\n");
+                    marking(x, y, BLACK);
+                    num_of_moves++;
+                    NEXT = 0;
+                } else {
+                    printf("invalid move, try with different coordinate\n");
+                    print_board();
+                }
+
+            }
+
+        } else {
+            while(NEXT){
+                fflush(stdin);
+                printf("WHITE Turn\n");
+                printf("Please enter the row coordinate\n");
+                scanf("%d", &x);
+                printf("Please enter the column coordinate\n");
+                scanf("%d", &y);
+                printf("current player is in second: %d\n",player);
+                printf("row = %d, column = %d \n", x, y);
+
+                if(is_markable(x, y, WHITE)){
+                    printf("it is markable\n");
+                    marking(x, y, WHITE);
+                    num_of_moves++;
+                    NEXT = 0;
+                } else {
+                    printf("invalid move, try with different coordinate\n");
+                    print_board();
+                }
+            }
+            player = num_of_moves % 2;
+        }
+
+
+        print_board();
+        print_score(player_1_score, player_2_score);
+
+
+        // 여기에 들어왔다는 것은 게임이 끝나지 않았다는 것이므로 입력을 받음.
+    }
+    if (player_1_score > player_2_score) {
+        printf("player 1 is the winner with the socre of %d : %d\n",player_1_score, player_2_score );
+    } else if (player_2_score > player_1_score) {
+        printf("player 2 is the winner with the socre of %d : %d\n",player_1_score, player_2_score );
+
+    } else if (player_1_score == player_2_score) {
+        printf("Even!\n");
+    }
+
+    return 0;
+}
 
 
