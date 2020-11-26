@@ -365,5 +365,25 @@ int is_game_end(int color){
         }
     }
 
+    if (markable_count > 0){
+        printf("There are %d number of vaild moves\n", markable_count);
+        return TRUE;
+    } else if(markable_count == 0) {
+        printf("No vaild moves remain\n");
+
+        if (blank_count > 0) {
+            printf("cannot make move, skip turn\n");
+            num_of_moves++;
+            return TRUE;
+        } else if (blank_count == 0) {
+            return FALSE;
+        }
+
+
+    }
+    return 0;
+
+}
+
 
 
